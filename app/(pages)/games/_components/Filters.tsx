@@ -121,80 +121,52 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
   if (loading) {
     return (
-      <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700'>
+      <div className='bg-white dark:bg-gray-800 rounded-lg shadow-md p-6'>
         <div className='animate-pulse space-y-4'>
           <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4'></div>
-          <div className='h-10 bg-gray-200 dark:bg-gray-700 rounded-xl'></div>
+          <div className='h-10 bg-gray-200 dark:bg-gray-700 rounded'></div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 space-y-6'>
-      <div className='flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700'>
-        <h2 className='text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2'>
-          <svg
-            className='w-5 h-5 text-blue-500'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
-            />
-          </svg>
+    <div className='bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6'>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
           فیلترها
         </h2>
         <button
           onClick={clearFilters}
-          className='text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium px-3 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200'
+          className='text-sm text-blue-600 dark:text-blue-400 hover:underline'
         >
-          پاک کردن
+          پاک کردن فیلترها
         </button>
       </div>
 
       {/* Search */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           جستجو
         </label>
-        <div className='relative'>
-          <input
-            type='text'
-            value={filters.search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder='نام بازی را وارد کنید...'
-            className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
-          />
-          <svg
-            className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-            />
-          </svg>
-        </div>
+        <input
+          type='text'
+          value={filters.search}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          placeholder='نام بازی را وارد کنید...'
+          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+        />
       </div>
 
       {/* Ordering */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           مرتب‌سازی
         </label>
         <select
           value={filters.ordering}
           onChange={(e) => handleOrderingChange(e.target.value)}
-          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
         >
           {ORDERING_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -206,13 +178,13 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Date Filter */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           تاریخ انتشار
         </label>
         <select
           value={filters.dates}
           onChange={(e) => handleDateChange(e.target.value)}
-          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
         >
           {DATE_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -224,7 +196,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Metacritic Filter */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           حداقل امتیاز Metacritic
         </label>
         <input
@@ -234,28 +206,28 @@ export function Filters({ onFilterChange }: FiltersProps) {
           value={filters.metacritic}
           onChange={(e) => handleMetacriticChange(e.target.value)}
           placeholder='مثلاً 80'
-          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
         />
       </div>
 
       {/* Genres */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           ژانرها
         </label>
-        <div className='max-h-48 overflow-y-auto space-y-2 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50'>
+        <div className='max-h-48 overflow-y-auto space-y-2 border border-gray-200 dark:border-gray-700 rounded-lg p-3'>
           {genres.map((genre) => (
             <label
               key={genre.id}
-              className='flex items-center space-x-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-lg transition-colors duration-200'
+              className='flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded'
             >
               <input
                 type='checkbox'
                 checked={filters.genres.includes(String(genre.id))}
                 onChange={() => handleGenreToggle(String(genre.id))}
-                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2'
+                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
               />
-              <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>
+              <span className='text-sm text-gray-700 dark:text-gray-300'>
                 {genre.name}
               </span>
             </label>
@@ -265,22 +237,22 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Platforms */}
       <div>
-        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
           پلتفرم‌ها
         </label>
-        <div className='max-h-48 overflow-y-auto space-y-2 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50'>
+        <div className='max-h-48 overflow-y-auto space-y-2 border border-gray-200 dark:border-gray-700 rounded-lg p-3'>
           {platforms.map((platform) => (
             <label
               key={platform.id}
-              className='flex items-center space-x-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-lg transition-colors duration-200'
+              className='flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded'
             >
               <input
                 type='checkbox'
                 checked={filters.platforms.includes(String(platform.id))}
                 onChange={() => handlePlatformToggle(String(platform.id))}
-                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2'
+                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
               />
-              <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>
+              <span className='text-sm text-gray-700 dark:text-gray-300'>
                 {platform.name}
               </span>
             </label>

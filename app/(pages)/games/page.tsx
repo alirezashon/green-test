@@ -98,113 +98,78 @@ export default function GamesPage() {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
-      <div className='container mx-auto px-4 py-8 max-w-7xl'>
-        {/* Header Section */}
-        <div className='mb-8 lg:mb-12'>
-          <div className='flex items-center justify-between mb-4'>
-            <div>
-              <h1 className='text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
-                بازی‌ها
-              </h1>
-              {totalCount > 0 && (
-                <p className='text-lg text-gray-600 dark:text-gray-400 flex items-center gap-2'>
-                  <svg
-                    className='w-5 h-5 text-blue-500'
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
-                    />
-                  </svg>
-                  <span className='font-semibold'>
-                    {totalCount.toLocaleString('fa-IR')}
-                  </span>
-                  <span>بازی موجود است</span>
-                </p>
-              )}
-            </div>
+    <div className='container mx-auto px-4 py-8'>
+      <div className='mb-8'>
+        <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
+          بازی‌ها
+        </h1>
+        <p className='text-gray-600 dark:text-gray-400'>
+          {totalCount > 0 &&
+            `تعداد کل: ${totalCount.toLocaleString('fa-IR')} بازی`}
+        </p>
+      </div>
+
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
+        {/* Filters Sidebar */}
+        <div className='lg:col-span-1'>
+          <div className='sticky top-4'>
+            <Filters onFilterChange={handleFilterChange} />
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8'>
-          {/* Filters Sidebar */}
-          <div className='lg:col-span-1'>
-            <div className='sticky top-4'>
-              <Filters onFilterChange={handleFilterChange} />
-            </div>
-          </div>
+        {/* Games Grid */}
+        <div className='lg:col-span-3'>
+          <GamesGrid games={games} loading={loading} />
 
-          {/* Games Grid */}
-          <div className='lg:col-span-3'>
-            <GamesGrid games={games} loading={loading} />
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className='mt-8 flex items-center justify-center gap-2'>
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className='px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
+              >
+                قبلی
+              </button>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className='mt-10 flex flex-col sm:flex-row items-center justify-center gap-4'>
-                <button
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                  className='group px-6 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:hover:shadow-sm'
-                >
-                  <span className='flex items-center gap-2'>
-                    <span className='group-hover:-translate-x-1 transition-transform duration-200'>
-                      ←
-                    </span>
-                    قبلی
-                  </span>
-                </button>
+              <div className='flex items-center gap-2'>
+                {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                  let pageNum: number
+                  if (totalPages <= 5) {
+                    pageNum = i + 1
+                  } else if (page <= 3) {
+                    pageNum = i + 1
+                  } else if (page >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i
+                  } else {
+                    pageNum = page - 2 + i
+                  }
 
-                <div className='flex items-center gap-2 flex-wrap justify-center'>
-                  {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                    let pageNum: number
-                    if (totalPages <= 5) {
-                      pageNum = i + 1
-                    } else if (page <= 3) {
-                      pageNum = i + 1
-                    } else if (page >= totalPages - 2) {
-                      pageNum = totalPages - 4 + i
-                    } else {
-                      pageNum = page - 2 + i
-                    }
-
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => handlePageChange(pageNum)}
-                        className={`px-5 py-3 rounded-xl font-semibold transition-all duration-200 shadow-sm hover:shadow-md ${
-                          page === pageNum
-                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105'
-                            : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-500 dark:hover:border-blue-500 hover:scale-105'
-                        }`}
-                      >
-                        {pageNum}
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <button
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === totalPages}
-                  className='group px-6 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-blue-500 dark:hover:border-blue-500 transition-all duration-200 font-medium shadow-sm hover:shadow-md disabled:hover:shadow-sm'
-                >
-                  <span className='flex items-center gap-2'>
-                    بعدی
-                    <span className='group-hover:translate-x-1 transition-transform duration-200'>
-                      →
-                    </span>
-                  </span>
-                </button>
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`px-4 py-2 rounded-lg transition-colors ${
+                        page === pageNum
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  )
+                })}
               </div>
-            )}
-          </div>
+
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className='px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'
+              >
+                بعدی
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
