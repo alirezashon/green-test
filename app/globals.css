@@ -1,13 +1,11 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+@import 'tailwindcss';
 @font-face {
   font-family: IranSans;
   src: url('assets/fonts/IRANSansWeb\(FaNum\).ttf');
+}
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @theme inline {
@@ -30,28 +28,34 @@ body {
 }
 
 * {
-
   font-family: IranSans;
 }
 
-/* Input text color fix */
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="number"],
-input[type="search"],
-textarea {
-  color: black !important;
+::-webkit-scrollbar {
+  width: 1.2vh;
+  height: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(187, 111, 250);
+}
 
-  input[type="text"],
-  input[type="password"],
-  input[type="email"],
-  input[type="number"],
-  input[type="search"],
-  textarea {
-    color: white !important;
-  }
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fff2f2;
+  border: ridge 0.1vh #b476fb;
+  box-shadow:
+    0px 0px 1px 1px #5914f8 inset,
+    1px 1px 2px 1px #faf9fb;
+  border-radius: 7px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background: #7747c0;
+  box-shadow:
+    0px 0px 1px 1px #d6b9f7,
+    1px 1px 1px 1px #f9f9fb inset;
 }

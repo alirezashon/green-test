@@ -32,7 +32,11 @@ export function Sidebar() {
         {navItems.map((item, index) => {
           const isActive = pathname === item.href
           return (
-            <Link key={index} href={item.href} style={{ textDecoration: 'none' }}>
+            <Link
+              key={index}
+              href={item.href}
+              style={{ textDecoration: 'none' }}
+            >
               <Box
                 px={4}
                 py={2}

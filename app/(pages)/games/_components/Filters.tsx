@@ -1,0 +1,292 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { NamedEntity } from '@/services/rawg'
+import { getGenres, getPlatforms } from '@/services/games'
+
+interface FiltersProps {
+  onFilterChange: (filters: FilterValues) => void
+}
+
+export interface FilterValues {
+  search: string
+  genres: string[]
+  platforms: string[]
+  ordering: string
+  dates: string
+  metacritic: string
+}
+
+const ORDERING_OPTIONS = [
+  { value: '', label: 'پیش‌فرض' },
+  { value: 'name', label: 'نام (صعودی)' },
+  { value: '-name', label: 'نام (نزولی)' },
+  { value: 'released', label: 'تاریخ انتشار (قدیمی)' },
+  { value: '-released', label: 'تاریخ انتشار (جدید)' },
+  { value: 'rating', label: 'امتیاز (کم)' },
+  { value: '-rating', label: 'امتیاز (زیاد)' },
+  { value: 'metacritic', label: 'Metacritic (کم)' },
+  { value: '-metacritic', label: 'Metacritic (زیاد)' },
+]
+
+const DATE_OPTIONS = [
+  { value: '', label: 'همه تاریخ‌ها' },
+  { value: '2024-01-01,2024-12-31', label: '2024' },
+  { value: '2023-01-01,2023-12-31', label: '2023' },
+  { value: '2022-01-01,2022-12-31', label: '2022' },
+  { value: '2021-01-01,2021-12-31', label: '2021' },
+  { value: '2020-01-01,2020-12-31', label: '2020' },
+]
+
+export function Filters({ onFilterChange }: FiltersProps) {
+  const [genres, setGenres] = useState<NamedEntity[]>([])
+  const [platforms, setPlatforms] = useState<NamedEntity[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState<FilterValues>({
+    search: '',
+    genres: [],
+    platforms: [],
+    ordering: '',
+    dates: '',
+    metacritic: '',
+  })
+
+  useEffect(() => {
+    const loadFilters = async () => {
+      try {
+        const [genresData, platformsData] = await Promise.all([
+          getGenres(),
+          getPlatforms(),
+        ])
+        setGenres(genresData.results)
+        setPlatforms(platformsData.results)
+      } catch (error) {
+        console.error('Error loading filters:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadFilters()
+  }, [])
+
+  useEffect(() => {
+    onFilterChange(filters)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters])
+
+  const handleSearchChange = (value: string) => {
+    setFilters((prev) => ({ ...prev, search: value }))
+  }
+
+  const handleGenreToggle = (genreId: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      genres: prev.genres.includes(genreId)
+        ? prev.genres.filter((id) => id !== genreId)
+        : [...prev.genres, genreId],
+    }))
+  }
+
+  const handlePlatformToggle = (platformId: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      platforms: prev.platforms.includes(platformId)
+        ? prev.platforms.filter((id) => id !== platformId)
+        : [...prev.platforms, platformId],
+    }))
+  }
+
+  const handleOrderingChange = (value: string) => {
+    setFilters((prev) => ({ ...prev, ordering: value }))
+  }
+
+  const handleDateChange = (value: string) => {
+    setFilters((prev) => ({ ...prev, dates: value }))
+  }
+
+  const handleMetacriticChange = (value: string) => {
+    setFilters((prev) => ({ ...prev, metacritic: value }))
+  }
+
+  const clearFilters = () => {
+    setFilters({
+      search: '',
+      genres: [],
+      platforms: [],
+      ordering: '',
+      dates: '',
+      metacritic: '',
+    })
+  }
+
+  if (loading) {
+    return (
+      <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700'>
+        <div className='animate-pulse space-y-4'>
+          <div className='h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4'></div>
+          <div className='h-10 bg-gray-200 dark:bg-gray-700 rounded-xl'></div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 space-y-6'>
+      <div className='flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700'>
+        <h2 className='text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2'>
+          <svg
+            className='w-5 h-5 text-blue-500'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
+            />
+          </svg>
+          فیلترها
+        </h2>
+        <button
+          onClick={clearFilters}
+          className='text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium px-3 py-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200'
+        >
+          پاک کردن
+        </button>
+      </div>
+
+      {/* Search */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          جستجو
+        </label>
+        <div className='relative'>
+          <input
+            type='text'
+            value={filters.search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder='نام بازی را وارد کنید...'
+            className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+          />
+          <svg
+            className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400'
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* Ordering */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          مرتب‌سازی
+        </label>
+        <select
+          value={filters.ordering}
+          onChange={(e) => handleOrderingChange(e.target.value)}
+          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+        >
+          {ORDERING_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Date Filter */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          تاریخ انتشار
+        </label>
+        <select
+          value={filters.dates}
+          onChange={(e) => handleDateChange(e.target.value)}
+          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+        >
+          {DATE_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Metacritic Filter */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          حداقل امتیاز Metacritic
+        </label>
+        <input
+          type='number'
+          min='0'
+          max='100'
+          value={filters.metacritic}
+          onChange={(e) => handleMetacriticChange(e.target.value)}
+          placeholder='مثلاً 80'
+          className='w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm hover:shadow-md'
+        />
+      </div>
+
+      {/* Genres */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          ژانرها
+        </label>
+        <div className='max-h-48 overflow-y-auto space-y-2 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50'>
+          {genres.map((genre) => (
+            <label
+              key={genre.id}
+              className='flex items-center space-x-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-lg transition-colors duration-200'
+            >
+              <input
+                type='checkbox'
+                checked={filters.genres.includes(String(genre.id))}
+                onChange={() => handleGenreToggle(String(genre.id))}
+                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2'
+              />
+              <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>
+                {genre.name}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Platforms */}
+      <div>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
+          پلتفرم‌ها
+        </label>
+        <div className='max-h-48 overflow-y-auto space-y-2 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-3 bg-gray-50 dark:bg-gray-900/50'>
+          {platforms.map((platform) => (
+            <label
+              key={platform.id}
+              className='flex items-center space-x-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-lg transition-colors duration-200'
+            >
+              <input
+                type='checkbox'
+                checked={filters.platforms.includes(String(platform.id))}
+                onChange={() => handlePlatformToggle(String(platform.id))}
+                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2'
+              />
+              <span className='text-sm text-gray-700 dark:text-gray-300 font-medium'>
+                {platform.name}
+              </span>
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

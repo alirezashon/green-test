@@ -8,7 +8,7 @@ export async function getCookieByKey(name: string) {
 export async function setCookieByTagAndValue({
   key,
   value,
-  path='/',
+  path = '/',
 }: {
   key: string
   value: string
