@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { NamedEntity } from '@/services/rawg'
 import { getGenres, getPlatforms } from '@/services/games'
+import { HiMagnifyingGlass, HiXMark, HiFunnel } from 'react-icons/hi2'
 
 interface FiltersProps {
   onFilterChange: (filters: FilterValues) => void
@@ -131,42 +132,49 @@ export function Filters({ onFilterChange }: FiltersProps) {
   }
 
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-6'>
-      <div className='flex items-center justify-between'>
-        <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
-          فیلترها
-        </h2>
+    <div className='bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 space-y-6'>
+      <div className='flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700'>
+        <div className='flex items-center gap-2'>
+          <HiFunnel className='w-5 h-5 text-blue-600 dark:text-blue-400' />
+          <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
+            فیلترها
+          </h2>
+        </div>
         <button
           onClick={clearFilters}
-          className='text-sm text-blue-600 dark:text-blue-400 hover:underline'
+          className='flex items-center gap-1 text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors'
         >
-          پاک کردن فیلترها
+          <HiXMark className='w-4 h-4' />
+          <span>پاک کردن</span>
         </button>
       </div>
 
       {/* Search */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           جستجو
         </label>
-        <input
-          type='text'
-          value={filters.search}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder='نام بازی را وارد کنید...'
-          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-        />
+        <div className='relative'>
+          <HiMagnifyingGlass className='absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500' />
+          <input
+            type='text'
+            value={filters.search}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder='نام بازی را وارد کنید...'
+            className='w-full pr-10 pl-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all'
+          />
+        </div>
       </div>
 
       {/* Ordering */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           مرتب‌سازی
         </label>
         <select
           value={filters.ordering}
           onChange={(e) => handleOrderingChange(e.target.value)}
-          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+          className='w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer'
         >
           {ORDERING_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -178,13 +186,13 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Date Filter */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           تاریخ انتشار
         </label>
         <select
           value={filters.dates}
           onChange={(e) => handleDateChange(e.target.value)}
-          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+          className='w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all cursor-pointer'
         >
           {DATE_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -196,7 +204,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Metacritic Filter */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           حداقل امتیاز Metacritic
         </label>
         <input
@@ -206,28 +214,28 @@ export function Filters({ onFilterChange }: FiltersProps) {
           value={filters.metacritic}
           onChange={(e) => handleMetacriticChange(e.target.value)}
           placeholder='مثلاً 80'
-          className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+          className='w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all'
         />
       </div>
 
       {/* Genres */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           ژانرها
         </label>
-        <div className='max-h-48 overflow-y-auto space-y-2 border border-gray-200 dark:border-gray-700 rounded-lg p-3'>
+        <div className='max-h-48 overflow-y-auto space-y-1.5 border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-gray-50 dark:bg-gray-900/50'>
           {genres.map((genre) => (
             <label
               key={genre.id}
-              className='flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded'
+              className='flex items-center gap-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-md transition-colors'
             >
               <input
                 type='checkbox'
                 checked={filters.genres.includes(String(genre.id))}
                 onChange={() => handleGenreToggle(String(genre.id))}
-                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
+                className='w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer'
               />
-              <span className='text-sm text-gray-700 dark:text-gray-300'>
+              <span className='text-sm text-gray-700 dark:text-gray-300 flex-1'>
                 {genre.name}
               </span>
             </label>
@@ -237,22 +245,22 @@ export function Filters({ onFilterChange }: FiltersProps) {
 
       {/* Platforms */}
       <div>
-        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+        <label className='block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
           پلتفرم‌ها
         </label>
-        <div className='max-h-48 overflow-y-auto space-y-2 border border-gray-200 dark:border-gray-700 rounded-lg p-3'>
+        <div className='max-h-48 overflow-y-auto space-y-1.5 border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-gray-50 dark:bg-gray-900/50'>
           {platforms.map((platform) => (
             <label
               key={platform.id}
-              className='flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded'
+              className='flex items-center gap-2 cursor-pointer hover:bg-white dark:hover:bg-gray-800 p-2 rounded-md transition-colors'
             >
               <input
                 type='checkbox'
                 checked={filters.platforms.includes(String(platform.id))}
                 onChange={() => handlePlatformToggle(String(platform.id))}
-                className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
+                className='w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer'
               />
-              <span className='text-sm text-gray-700 dark:text-gray-300'>
+              <span className='text-sm text-gray-700 dark:text-gray-300 flex-1'>
                 {platform.name}
               </span>
             </label>

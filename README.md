@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
+پروژه با یارن ایجاد شد و در صورت تمایل برای اجرا بدون یارن ، فایل لاک را پاک کنید و در غیر این صورت برای نصب 
+yarn
+و برای اجرا
+yarn dev 
+و برای بیلد 
+yarn build
+و برای  اجرا در محیط پروداکشن 
+yarn start
+و در صورت استفاده از ان پی ام
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+npm run build
+npm run start
+جهت سهولت در اجرا فایل های انوایرومنت از گیت ایگنور حذف می شود
+مسیر های پروژه به ترتیب تسک ها عبارت اند از
+/login
+/dashboard
+/dashboard/product
+/dashboard/users
+====================
+/games
+/games/[id]
+====================
+/multi-selector
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+احراز هویت به صورت ساده و با جایگذاری توکن در کوکی انجام شد و بررسی آن در فایل میدلویر انجام میشود
+در این فایل مسیر های آزاد در انتهای آن داخل استرینگ با پایپ از یکدیگر جدا شدند
+تمامی مسیر های دیگر به صفحه لاگین هدایت می شوند
+برای مدیریت کوکی ها از نکست هدر استفاده شد و توابع آن در فولدر اکشن موجود است
+سرویس های اتصال به رابط برنامه نویسی در پوشه سرویس موجود است
+یک تابع فچر برای هر مسیر با توجه به نیاز پروژه ایجاد شد
+و در دیگر فایل های این پوشه آدرس های دقیق آن موجود است
+تسک اول با توجه به درخواست از پکیج مربوطه برای ظاهر استفاده شد
+تسک دوم از تیلویند برای استایل دهی سریع استفاده شد
+همینطور تسک سوم تا در پوشه مالتی سلکتور به همراه توضیحات موجود است
+در فایل نکست کانفیگ درخواست / به صفحه داشبورد هدایت می شود
+و آدرس اولیه تصاویر در آن افزوده شد
+در بخش بازی ها با توجه به محدودیت دسترسی از سایت سرویس دهنده ، از اپتیمایز کردن تصاویر 
+خودداری شد تا در هر صورت رندر شوند
+استایل های سراسری در فایل گلوبال موجود است
+اینترفیس ها در فولدر تایپ گذاشته شد
