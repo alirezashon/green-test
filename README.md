@@ -65,4 +65,8 @@ npm run start
 
 اینترفیس ها در فولدر تایپ گذاشته شد:
 
+<<<<<<< HEAD
 /types
+=======
+/types
+>>>>>>> c34e90ac758ff6ca7df4a74bc4f3345b622caee0
