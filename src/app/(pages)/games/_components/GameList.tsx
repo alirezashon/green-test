@@ -6,17 +6,16 @@ import { Game, GamesQueryParams } from '@/services/rawg'
 import { getGames } from '@/services/games'
 import { Filters, FilterValues } from './Filters'
 import { GamesGrid } from './GamesGrid'
-import { HiChevronRight, HiChevronLeft } from 'react-icons/hi2'
 import { FaGamepad } from 'react-icons/fa'
 
 export default function GamesPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [games, setGames] = useState<Game[]>([])
-  const [loading, setLoading] = useState(true)
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [totalCount, setTotalCount] = useState(0)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [totalCount, setTotalCount] = useState<number>(0)
   const [filters, setFilters] = useState<FilterValues>({
     search: searchParams.get('search') || '',
     genres: searchParams.get('genres')?.split(',').filter(Boolean) || [],
@@ -100,86 +99,91 @@ export default function GamesPage() {
   }
 
   return (
-    <div className='container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12'>
+    <div className='container mx-auto px-4 lg:px-8 py-10'>
       {/* Header */}
-      <div className='mb-8 lg:mb-10'>
-        <div className='flex items-center gap-3 mb-3'>
-          <FaGamepad className='w-8 h-8 text-blue-600 dark:text-blue-400' />
-          <h1 className='text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white'>
+      <div className='mb-10'>
+        <div className='flex items-center gap-3 mb-2'>
+          <FaGamepad className='w-7 h-7 text-blue-600 dark:text-blue-400' />
+          <h1 className='text-3xl font-bold text-gray-900 dark:text-white'>
             بازی‌ها
           </h1>
         </div>
+
         {totalCount > 0 && (
-          <p className='text-gray-600 dark:text-gray-400 text-lg'>
-            تعداد کل: <span className='font-semibold'>{totalCount.toLocaleString('fa-IR')}</span> بازی
+          <p className='text-gray-600 dark:text-gray-400'>
+            تعداد کل{' '}
+            <span className='font-semibold text-gray-900  '>
+              {totalCount.toLocaleString('fa-IR')}
+            </span>{' '}
+            بازی
           </p>
         )}
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8'>
-        {/* Filters Sidebar */}
-        <div className='lg:col-span-1'>
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-8'>
+        {/* Sidebar */}
+        <aside className='lg:col-span-1'>
           <div className='sticky top-6'>
             <Filters onFilterChange={handleFilterChange} />
           </div>
-        </div>
+        </aside>
 
-        {/* Games Grid */}
-        <div className='lg:col-span-3'>
+        {/* Content */}
+        <section className='lg:col-span-3'>
           <GamesGrid games={games} loading={loading} />
 
-          {/* Pagination */}
           {totalPages > 1 && (
-            <div className='mt-10 flex items-center justify-center gap-2 flex-wrap'>
+            <div className='mt-12 flex items-center justify-center gap-2 flex-wrap'>
+              {/* Prev */}
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
-                className='flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-all font-medium'
+                className='px-4 py-2 rounded-lg border text-sm font-medium
+              border-gray-300 dark:border-gray-600
+              disabled:opacity-40 disabled:cursor-not-allowed
+              hover:bg-gray-100 dark:hover:bg-gray-800'
               >
-                <HiChevronRight className='w-5 h-5' />
-                <span>قبلی</span>
+                قبلی
               </button>
 
-              <div className='flex items-center gap-2'>
-                {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                  let pageNum: number
-                  if (totalPages <= 5) {
-                    pageNum = i + 1
-                  } else if (page <= 3) {
-                    pageNum = i + 1
-                  } else if (page >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i
-                  } else {
-                    pageNum = page - 2 + i
-                  }
+              {/* Numbers */}
+              {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                let pageNum: number
+                if (totalPages <= 5) pageNum = i + 1
+                else if (page <= 3) pageNum = i + 1
+                else if (page >= totalPages - 2) pageNum = totalPages - 4 + i
+                else pageNum = page - 2 + i
 
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => handlePageChange(pageNum)}
-                      className={`px-4 py-2.5 rounded-lg transition-all font-medium min-w-[2.5rem] ${
-                        page === pageNum
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  )
-                })}
-              </div>
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`min-w-[38px] h-9 rounded-lg text-sm font-medium border
+                  ${
+                    page === pageNum
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  }`}
+                  >
+                    {pageNum}
+                  </button>
+                )
+              })}
 
+              {/* Next */}
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
-                className='flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-all font-medium'
+                className='px-4 py-2 rounded-lg border text-sm font-medium
+              border-gray-300 dark:border-gray-600
+              disabled:opacity-40 disabled:cursor-not-allowed
+              hover:bg-gray-100 dark:hover:bg-gray-800'
               >
-                <span>بعدی</span>
-                <HiChevronLeft className='w-5 h-5' />
+                بعدی
               </button>
             </div>
           )}
-        </div>
+        </section>
       </div>
     </div>
   )

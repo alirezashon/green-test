@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { getProducts, searchProducts } from '@/services/products'
 import type { Product } from '@/types/product'
-import { SkeletonCard } from '@/components/skeleton-card'
+import { SkeletonCard } from './_components/skeleton-card'
 import Image from 'next/image'
 
 export default function ProductsPage() {

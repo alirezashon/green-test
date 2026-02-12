@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Box } from '@chakra-ui/react'
-import { TopNav } from '@/components/top-nav'
+import { TopNav } from './_components/top-nav'
 import { isAuthenticated } from '@/services/auth'
 
 export default function DashboardLayout({

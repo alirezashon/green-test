@@ -9,7 +9,7 @@ import {
   Spinner,
   VStack,
 } from '@chakra-ui/react'
-import { StatCard } from '@/components/stat-card'
+import { StatCard } from './_components/stat-card'
 import { getUsers } from '@/services/users'
 import { getProducts } from '@/services/products'
 
